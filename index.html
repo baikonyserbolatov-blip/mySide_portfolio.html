@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Baikony Erbolat — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#0052CC;
+      --primary-light:#4C9AFF;
+      --primary-dark:#0747A6;
+      --accent:#6554C0;
+      --light:#F4F5F7;
+      --dark:#172B4D;
+      --muted:#6B778C;
+      --white:#FFFFFF;
+      --gradient-primary: linear-gradient(135deg,#0052CC 0%, #6554C0 100%);
+      --radius-sm:6px;
+      --radius-md:12px;
+      --radius-lg:16px;
+      --shadow-sm:0 2px 8px rgba(9,30,66,0.12);
+      --shadow-md:0 8px 16px rgba(9,30,66,0.15);
+      --shadow-lg:0 16px 32px rgba(9,30,66,0.20);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: var(--light);
+      color:var(--dark);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Animated gradient background (full page) */
+    .animated-bg{
+      position:fixed;inset:0;background:linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);
+      background-size:400% 400%; animation:gradient 18s ease infinite; z-index:-2;
+    }
+    @keyframes gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    /* Header */
+    header.header{
+      position:fixed;top:0;left:0;width:100%;padding:16px 28px;z-index:1000;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:transparent;transition:all .28s ease;
+    }
+    header.header.scrolled{background:rgba(255,255,255,0.95);box-shadow:var(--shadow-md);backdrop-filter:blur(10px)}
+
+    .nav-container{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--white);text-decoration:none;font-weight:800;font-size:18px}
+    .logo-icon{width:44px;height:44px;border-radius:12px;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:var(--white);box-shadow:var(--shadow-md);font-weight:800}
+
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .nav-link{color:var(--white);text-decoration:none;padding:10px 14px;border-radius:12px;font-weight:600;position:relative;overflow:hidden}
+    .nav-link::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gradient-primary);transition:left .28s}
+    .nav-link:hover::before{left:0}
+    .nav-link:hover{color:#fff;transform:translateY(-2px)}
+
+    .auth-buttons{display:flex;gap:12px;align-items:center}
+    .btn{padding:10px 18px;border-radius:12px;font-weight:700;border:none;cursor:pointer;position:relative;overflow:hidden}
+    .btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.22);color:var(--white)}
+    .btn-primary{background:var(--gradient-primary);color:var(--white);box-shadow:var(--shadow-md)}
+
+    /* Hero - full screen */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;z-index:1;color:var(--white)}
+    .hero-content{max-width:920px}
+    .hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;line-height:1.02;margin-bottom:14px;background:linear-gradient(135deg,#fff,#a8edea);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:slideUp .9s both}
+    .hero p{font-size:clamp(16px,2.2vw,20px);color:rgba(255,255,255,0.92);margin:14px auto 28px;max-width:760px;animation:slideUp 1s .15s both}
+    @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .hero-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:slideUp 1s .25s both}
+    .btn-hero{padding:14px 28px;border-radius:14px;font-size:16px}
+
+    /* floating icons layer */
+    .floating-elements{position:absolute;inset:0;pointer-events:none;z-index:0}
+    .floating-element{position:absolute;opacity:.18;font-size:20px;animation:floatRandom 18s linear infinite}
+    @keyframes floatRandom{0%{transform:translateY(0)}50%{transform:translateY(-40px)}100%{transform:translateY(0)}}
+
+    /* Sections */
+    .section{padding:88px 20px;background:transparent}
+    .container{max-width:1200px;margin:0 auto}
+
+    .section-title{text-align:center;font-size:clamp(26px,4vw,40px);font-weight:800;margin-bottom:28px;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* Features / cards */
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+    .feature-card{background:rgba(255,255,255,0.95);padding:28px;border-radius:24px;box-shadow:var(--shadow-lg);transition:all .3s;overflow:hidden}
+    .feature-card:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(9,30,66,0.28)}
+    .feature-icon{width:88px;height:88px;border-radius:999px;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;margin:0 auto 14px;box-shadow:var(--shadow-md)}
+
+    /* Projects */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    .proj-card{background:var(--white);padding:18px;border-radius:16px;box-shadow:var(--shadow-md);transition:all .25s;overflow:hidden;border:1px solid rgba(10,20,40,0.04)}
+    .proj-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+    .proj-card img{width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px}
+    .proj-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .proj-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{padding:6px 10px;border-radius:999px;background:rgba(0,82,204,0.06);color:var(--primary);font-weight:700;font-size:13px}
+
+    /* Contact/foot */
+    .contact-card{background:rgba(255,255,255,0.95);padding:26px;border-radius:18px;box-shadow:var(--shadow-md);text-align:center}
+    footer{padding:28px;text-align:center;color:var(--muted)}
+
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:2000}
+    .modal.show{display:flex}
+    .modal-box{background:rgba(255,255,255,0.96);padding:28px;border-radius:18px;max-width:540px;width:94%;box-shadow:var(--shadow-lg)}
+
+    /* language switcher */
+    .lang-switch{display:flex;gap:8px;align-items:center}
+    .lang-btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:var(--white);font-weight:700;cursor:pointer}
+
+    /* responsive */
+    @media (max-width:920px){
+      .nav-links{display:none}
+      header.header{padding:12px}
+      .hero{padding:120px 16px 60px}
+    }
+    @media (max-width:600px){
+      .hero h1{font-size:28px}
+      .hero p{font-size:15px}
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-bg" aria-hidden="true"></div>
+
+  <header class="header" id="pageHeader">
+    <div class="nav-container">
+      <a class="brand" href="#" aria-label="home">
+        <div class="logo-icon">BE</div>
+        <div style="color:var(--white);margin-left:6px">Baikony Portfolio</div>
+      </a>
+
+      <nav style="display:flex;align-items:center;gap:14px">
+        <div class="nav-links" role="navigation" aria-label="primary">
+          <a class="nav-link" href="#projects" data-i18n="nav_projects">Жобалар</a>
+          <a class="nav-link" href="#skills" data-i18n="nav_skills">Дағдылар</a>
+          <a class="nav-link" href="#about" data-i18n="nav_about">Мен туралы</a>
+          <a class="nav-link" href="#contact" data-i18n="nav_contact">Байланыс</a>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="lang-switch" role="toolbar" aria-label="language">
+            <button class="lang-btn" data-lang="kz">KZ</button>
+            <button class="lang-btn" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+          <div class="auth-buttons" style="margin-left:8px">
+            <button class="btn btn-outline" onclick="openModal('login')"><span data-i18n="btn_login">Кіру</span></button>
+            <button class="btn btn-primary" onclick="openModal('register')"><span data-i18n="btn_register">Тіркелу</span></button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="hero" id="home" role="main">
+      <div class="floating-elements" id="floatingElements" aria-hidden="true"></div>
+      <div class="hero-content container" >
+        <h1 data-i18n="hero_title">Байқоныс Ерболат — Web & AI Developer</h1>
+        <p data-i18n="hero_sub">Алматыда оқимын — Жасанды интеллект факультеті. Паблик сайттарды GitHub Pages арқылы жасаймын. Технологиялар: HTML, CSS, JavaScript, Python, Java.</p>
+
+        <div class="hero-buttons" role="group" aria-label="hero actions">
+          <button class="btn btn-hero btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})" data-i18n="cta_projects">Жобаларды көру</button>
+          <button class="btn btn-hero btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-i18n="cta_contact">Байланысу</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills / Features -->
+    <section class="section" id="skills">
+      <div class="container">
+        <h2 class="section-title" data-i18n="skills_title">Дағдылар</h2>
+        <div class="features-grid" aria-hidden="false">
+          <div class="feature-card">
+            <div class="feature-icon">💻</div>
+            <h3 data-i18n="skill_frontend">Frontend</h3>
+            <p data-i18n="skill_frontend_text">HTML, CSS, JavaScript — адаптивті, перформант интерфейстер жасаймын.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 data-i18n="skill_ai">AI / Python</h3>
+            <p data-i18n="skill_ai_text">Python, ML негіздері, қарапайым AI модельдермен тәжірибе.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3 data-i18n="skill_backend">Backend / Java</h3>
+            <p data-i18n="skill_backend_text">Java-да логика, REST API-лар, қарапайым сервер кодтары.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="section-title" data-i18n="projects_title">Таңдаулы жобалар</h2>
+        <div class="projects-grid" aria-live="polite">
+          <!-- 1 -->
+          <article class="proj-card" aria-labelledby="p1">
+            <img src="https://placehold.co/800x450?text=Programming+Guide" alt="Programming Guide preview">
+            <h3 id="p1">Programming Guide</h3>
+            <p class="proj-meta">
+              <span class="tag">Guide</span>
+              <a href="https://baikonyserbolatov-blip.github.io/guide.it/programming.html" target="_blank" rel="noopener">Ашу →</a>
+            </p>
+            <p class="muted">Интерактивті бағдарламалау гиді — CodeHub.</p>
+          </article>
+
+          <!-- 2 -->
+          <article class="proj-card" aria-labelledby="p2">
+            <img src="https://placehold.co/800x450?text=Cars+and+Information" alt="Cars and information">
+            <h3 id="p2">Cars & Information</h3>
+            <p class="proj-meta">
+              <span class="tag">Info</span>
+              <a href="https://baikonyserbolatov-blip.github.io/Cars-and-information/" target="_blank" rel="noopener">Ашу →</a>
+            </p>
+            <p class="muted">Автокөліктер туралы ақпараттық сайт.</p>
+          </article>
+
+          <!-- 3 -->
+          <article class="proj-card" aria-labelledby="p3">
+            <img src="https://placehold.co/800x450?text=Online+Shopping" alt="Online Shopping preview">
+            <h3 id="p3">Online Shopping</h3>
+            <p class="proj-meta">
+              <span class="tag">E-Commerce</span>
+              <a href="https://baikonyserbolatov-blip.github.io/Online-Shoping/" target="_blank" rel="noopener">Ашу →</a>
+            </p>
+            <p class="muted">Онлайн дүкен демонстрациясы.</p>
+          </article>
+
+          <!-- 4 -->
+          <article class="proj-card" aria-labelledby="p4">
+            <img src="https://placehold.co/800x450?text=My+Online+Market" alt="My Online Market">
+            <h3 id="p4">My Online Market</h3>
+            <p class="proj-meta">
+              <span class="tag">Market</span>
+              <a href="https://baikonyserbolatov-blip.github.io/my-online-market/" target="_blank" rel="noopener">Ашу →</a>
+            </p>
+            <p class="muted">Жеке онлайн маркет жобасы.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title" data-i18n="about_title">Мен туралы</h2>
+        <div style="display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start">
+          <div>
+            <p data-i18n="about_text">Мен — Байқоныс Ерболат, Алматыда жасанды интеллект мамандығы бойынша оқимын. GitHub Pages-та паблик сайттар жасаймын, фронтендте — HTML/CSS/JS, бэкенд логикасында — Java/Python қолданамын.</p>
+            <ul style="margin-top:14px;list-style:disc;padding-left:18px;color:var(--muted)">
+              <li data-i18n="about_li1">Паблик веб-сайттар (GitHub Pages)</li>
+              <li data-i18n="about_li2">HTML / CSS / JS / Python / Java</li>
+              <li data-i18n="about_li3">AI — зерттеу және жаттығу</li>
+            </ul>
+          </div>
+          <aside>
+            <div class="contact-card">
+              <h3 data-i18n="contact_card_title">Байланыс</h3>
+              <p><strong>Email:</strong> <a href="mailto:baiqonyserbolat@gmail.com">baiqonyserbolat@gmail.com</a></p>
+              <p><strong>Телефон:</strong> <a href="tel:+77711629161">+7 771 162 91 61</a></p>
+              <p style="margin-top:8px"><strong>GitHub:</strong> <a href="https://github.com/baikonyserbolatov-blip" target="_blank" rel="noopener">baikonyserbolatov-blip</a></p>
+              <div style="margin-top:12px">
+                <a class="btn btn-primary" href="#" onclick="downloadCV()" data-i18n="cv_btn">CV жүктеу</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact simple -->
+    <section class="section" id="contact">
+      <div class="container">
+        <h2 class="section-title" data-i18n="contact_title">Хабарласу</h2>
+        <div style="max-width:720px;margin:0 auto">
+          <div class="contact-card">
+            <p data-i18n="contact_text">Электрондық пошта арқылы хабарлассаңыз болады — жауап беремін. Немесе тікелей телефон/Telegram.</p>
+            <p><strong>Email:</strong> <a href="mailto:baiqonyserbolat@gmail.com">baiqonyserbolat@gmail.com</a></p>
+            <p><strong>Тел:</strong> <a href="tel:+77711629161">+7 771 162 91 61</a></p>
+            <div style="margin-top:12px">
+              <a class="btn btn-primary" href="mailto:baiqonyserbolat@gmail.com">Хабарлама жіберу</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Байқоныс Ерболат — Барлық құқықтар қорғалған.
+    </footer>
+  </main>
+
+  <!-- Modals (login/register) -->
+  <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal-box">
+      <h3 id="loginTitle" data-i18n="modal_login_title">Жүйеге кіру</h3>
+      <form id="loginForm" onsubmit="simulateAuth(event,'login')">
+        <div style="margin:12px 0">
+          <input class="form-control" name="email" type="email" placeholder="Эл. пошта" required style="width:100%;padding:12px;border-radius:10px;border:1px solid #E6E9EF">
+        </div>
+        <div style="margin:12px 0">
+          <input class="form-control" name="pass" type="password" placeholder="Құпия сөз" required style="width:100%;padding:12px;border-radius:10px;border:1px solid #E6E9EF">
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" onclick="closeModal()">Бас тарту</button>
+          <button type="submit" class="btn btn-primary">Кіру</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="registerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
+    <div class="modal-box">
+      <h3 id="regTitle" data-i18n="modal_register_title">Тіркелу</h3>
+      <form id="regForm" onsubmit="simulateAuth(event,'register')">
+        <div style="margin:12px 0"><input class="form-control" name="name" type="text" placeholder="Аты-жөні" required style="width:100%;padding:12px;border-radius:10px;border:1px solid #E6E9EF"></div>
+        <div style="margin:12px 0"><input class="form-control" name="email" type="email" placeholder="Эл. пошта" required style="width:100%;padding:12px;border-radius:10px;border:1px solid #E6E9EF"></div>
+        <div style="margin:12px 0"><input class="form-control" name="pass" type="password" placeholder="Құпия сөз" required style="width:100%;padding:12px;border-radius:10px;border:1px solid #E6E9EF"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" onclick="closeModal()">Бас тарту</button>
+          <button type="submit" class="btn btn-primary">Тіркелу</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // YEAR
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Floating icons for hero
+    function createFloatingElements(){
+      const container = document.getElementById('floatingElements');
+      const icons = ['🎯','🚀','⭐','💡','🔮','⚡','📦','👨‍💻'];
+      for(let i=0;i<14;i++){
+        const el = document.createElement('div');
+        el.className='floating-element';
+        el.textContent = icons[Math.floor(Math.random()*icons.length)];
+        el.style.left = Math.random()*90+'%';
+        el.style.top = Math.random()*80+'%';
+        el.style.fontSize = (Math.random()*28+14)+'px';
+        el.style.animationDuration = (Math.random()*18+10)+'s';
+        el.style.opacity = (Math.random()*0.4+0.08).toString();
+        container.appendChild(el);
+      }
+    }
+
+    createFloatingElements();
+
+    // Header scroll class
+    const header = document.getElementById('pageHeader');
+    window.addEventListener('scroll', ()=>{
+      if(window.scrollY>80) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+    });
+
+    // Modal controls
+    function openModal(type){
+      closeModal();
+      if(type==='login') document.getElementById('loginModal').classList.add('show');
+      if(type==='register') document.getElementById('registerModal').classList.add('show');
+    }
+    function closeModal(){
+      document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'));
+    }
+    window.addEventListener('click', (e)=>{ if(e.target.classList.contains('modal')) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    function simulateAuth(e,mode){
+      e.preventDefault();
+      // Simple UI demo
+      closeModal();
+      const div = document.createElement('div');
+      div.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;padding:26px;border-radius:12px;z-index:3000;box-shadow:0 30px 60px rgba(0,0,0,0.25);text-align:center';
+      div.innerHTML = '<div style="font-size:36px">🎉</div><h3 style="margin:10px 0;">Сәтті!</h3><p style="color:#666">'+(mode==='login'?'Кіруші':'Жаңадан тіркелген')+' — демо</p>';
+      document.body.appendChild(div);
+      setTimeout(()=>div.remove(),1800);
+    }
+
+    // CV download stub (you can change link)
+    function downloadCV(){
+      alert('CV функциясы: PDF файлын немесе сілтемені осында қою керек.');
+    }
+
+    // Language data
+    const langData = {
+      kz:{
+        nav_projects:'Жобалар', nav_skills:'Дағдылар', nav_about:'Мен туралы', nav_contact:'Байланыс',
+        hero_title:'Байқоныс Ерболат — Web & AI Developer', hero_sub:'Алматыда оқимын — Жасанды интеллект факультеті. Паблик сайттар GitHub Pages арқылы.',
+        cta_projects:'Жобаларды көру', cta_contact:'Байланысу',
+        skills_title:'Дағдылар', skill_frontend:'Frontend', skill_frontend_text:'HTML, CSS, JavaScript — адаптивті интерфейстер.',
+        skill_ai:'AI / Python', skill_ai_text:'Python, ML негіздері, AI тәжірибелері.',
+        skill_backend:'Backend / Java', skill_backend_text:'Java, REST API, сервер логикасы.',
+        projects_title:'Таңдаулы жобалар', about_title:'Мен туралы', about_text:'Мен — Байқоныс Ерболат, Алматыда жасанды интеллект оқимын. GitHub Pages-та веб-сайттар жасаймын.',
+        about_li1:'Паблик веб-сайттар (GitHub Pages)', about_li2:'HTML / CSS / JS / Python / Java', about_li3:'AI — зерттеу және жаттығу',
+        contact_card_title:'Байланыс', cv_btn:'CV жүктеу', contact_title:'Хабарласу', contact_text:'Электрондық пошта арқылы хабарлассаңыз болады — жауап беремін.',
+        modal_login_title:'Жүйеге кіру', modal_register_title:'Тіркелу', btn_login:'Кіру', btn_register:'Тіркелу'
+      },
+      ru:{
+        nav_projects:'Проекты', nav_skills:'Навыки', nav_about:'Обо мне', nav_contact:'Контакты',
+        hero_title:'Байконыс Ерболат — Web & AI Developer', hero_sub:'Учусь в Алматы — факультет искусственного интеллекта. Публикую сайты на GitHub Pages.',
+        cta_projects:'Смотреть проекты', cta_contact:'Связаться',
+        skills_title:'Навыки', skill_frontend:'Frontend', skill_frontend_text:'HTML, CSS, JavaScript — адаптивные интерфейсы.',
+        skill_ai:'AI / Python', skill_ai_text:'Python, основы ML, эксперименты с AI.',
+        skill_backend:'Backend / Java', skill_backend_text:'Java, REST API, серверная логика.',
+        projects_title:'Избранные проекты', about_title:'Обо мне', about_text:'Я — Байконыс Ерболат, учусь в Алматы на ИИ. Делаю сайты на GitHub Pages.',
+        about_li1:'Публичные веб-сайты (GitHub Pages)', about_li2:'HTML / CSS / JS / Python / Java', about_li3:'AI — исследования и практика',
+        contact_card_title:'Контакты', cv_btn:'Скачать CV', contact_title:'Связаться', contact_text:'Пишите по электронной почте — отвечу.',
+        modal_login_title:'Вход', modal_register_title:'Регистрация', btn_login:'Войти', btn_register:'Регистрация'
+      },
+      en:{
+        nav_projects:'Projects', nav_skills:'Skills', nav_about:'About', nav_contact:'Contact',
+        hero_title:'Baikony Erbolat — Web & AI Developer', hero_sub:'Studying AI in Almaty. I build public websites on GitHub Pages. Tech: HTML, CSS, JS, Python, Java.',
+        cta_projects:'View projects', cta_contact:'Contact me',
+        skills_title:'Skills', skill_frontend:'Frontend', skill_frontend_text:'HTML, CSS, JavaScript — responsive interfaces.',
+        skill_ai:'AI / Python', skill_ai_text:'Python, ML basics, AI experiments.',
+        skill_backend:'Backend / Java', skill_backend_text:'Java, REST APIs, server logic.',
+        projects_title:'Selected projects', about_title:'About me', about_text:'I am Baikony Erbolat, studying AI in Almaty. I create websites on GitHub Pages.',
+        about_li1:'Public websites (GitHub Pages)', about_li2:'HTML / CSS / JS / Python / Java', about_li3:'AI — research & practice',
+        contact_card_title:'Contact', cv_btn:'Download CV', contact_title:'Get in touch', contact_text:'Reach me by email or phone.',
+        modal_login_title:'Login', modal_register_title:'Register', btn_login:'Login', btn_register:'Register'
+      }
+    };
+
+    // Language switcher
+    function setLang(l){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(langData[l] && langData[l][key]) el.textContent = langData[l][key];
+      });
+      // update nav-link text nodes if they lack data-i18n attributes (some anchors)
+    }
+    // attach events
+    document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click', ()=>setLang(btn.dataset.lang)));
+    // init default
+    setLang('kz');
+
+    // small accessibility: focus on first link after load
+    window.addEventListener('load', ()=>{ setTimeout(()=>{ const el=document.querySelector('.nav-link'); if(el) el.focus(); },600); });
+  </script>
+</body>
+</html>
